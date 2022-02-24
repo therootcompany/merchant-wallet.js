@@ -1,0 +1,19 @@
+{
+  "name": "hd-wallet",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dash-test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "AJ ONeal <aj@therootcompany.com> (https://therootcompany.com/)",
+  "license": "SEE LICENSE IN LICENSE",
+  "dependencies": {
+    "@root/base58check": "^1.0.0",
+    "bip39": "^3.0.4",
+    "dotenv": "^16.0.0",
+    "hdkey": "^2.0.1",
+    "qrcode-svg": "^1.1.0"
+  }
+}
