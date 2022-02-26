@@ -5,14 +5,12 @@
 Generate secure (unique) per-customer Payment Addresses (PubKeyHash) and QR
 Codes for receiving payments via Digital Cash (Dash, or similar).
 
-```txt
-    ====== [DASH] (Derived) Public Key Hash ======
-```
-
 <img width="365" alt="dash://XcsLKywcU85QginxhJNYibJc3j4Aawa41Q?amount=0.1" src="https://user-images.githubusercontent.com/122831/155840879-a2b26db2-aa05-4c33-ab91-3496a34155de.png">
 
 ```txt
-        DASH: XcsLKywcU85QginxhJNYibJc3j4Aawa41Q
+    ====== [DASH] (Derived) Public Key Hash ======
+
+       DASH: XcsLKywcU85QginxhJNYibJc3j4Aawa41Q
 ```
 
 Use this library and included tools to generate a private key, and an "extended"
