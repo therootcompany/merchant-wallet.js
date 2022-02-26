@@ -1,0 +1,14 @@
+{
+  "bitcoin": {
+    "name": "bitcoin",
+    "pubKeyHashVersion": "00",
+    "privateKeyVersion": "80",
+    "coinType": "0"
+  },
+  "dash": {
+    "name": "dash",
+    "pubKeyHashVersion": "4c",
+    "privateKeyVersion": "cc",
+    "coinType": "5"
+  }
+}

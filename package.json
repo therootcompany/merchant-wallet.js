@@ -1,12 +1,13 @@
 {
-  "name": "hd-wallet",
-  "version": "0.1.0",
+  "name": "@root/merchant-wallet",
+  "version": "1.0.0",
   "description": "",
-  "main": "dash-test.js",
+  "main": "lib/wallet.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test.js"
   },
   "keywords": [],
+  "files": ["lib", "bin"],
   "author": "AJ ONeal <aj@therootcompany.com> (https://therootcompany.com/)",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
