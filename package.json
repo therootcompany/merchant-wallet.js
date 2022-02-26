@@ -1,13 +1,16 @@
 {
   "name": "@root/merchant-wallet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "lib/wallet.js",
   "scripts": {
     "test": "node test.js"
   },
   "keywords": [],
-  "files": ["lib", "bin"],
+  "files": [
+    "lib",
+    "bin"
+  ],
   "author": "AJ ONeal <aj@therootcompany.com> (https://therootcompany.com/)",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
