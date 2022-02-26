@@ -10,7 +10,7 @@ let Wallet = require("../lib/wallet.js").Wallet;
 
 async function main() {
   let index = parseInt(process.argv[2], 10);
-  let amount = parseInt(process.argv[3], 10);
+  let amount = parseFloat(process.argv[3], 10);
   let coinName = process.argv[4] || process.env.WALLET_TYPE || "dash";
 
   if (!process.argv[2] || (!index && 0 !== index)) {
