@@ -1,6 +1,7 @@
 .env
 .env.*
 *.svg
+*.html
 
 # Logs
 logs
