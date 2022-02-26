@@ -115,8 +115,7 @@ XPUB_KEY=xpub6EVfukfarxzs7NhxQbMQybLvsfLDEYrex5SdDsEuZ7oddnPxaLSW4wX9ZAR5zVYSFnx
 `.env.secret`:
 
 ```bash
-BASE2048_PASSPHRASE="peanut valley bargain affair zebra antenna govern bind myth
-doll weekend elbow"
+BASE2048_PASSPHRASE="peanut valley bargain affair zebra antenna govern bind myth doll weekend elbow"
 ```
 
 ## Exploring & Debugging
