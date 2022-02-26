@@ -17,6 +17,10 @@ Use this library and included tools to generate a private key, and an "extended"
 public key, which will allow you to create payment addresses on your server
 without storing your private key on your server.
 
+# Watch the Video
+
+<https://youtu.be/Q01nLQ74xUI>
+
 ## Features
 
 - QuickStart
