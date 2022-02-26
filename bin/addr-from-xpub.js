@@ -4,6 +4,8 @@
 require("dotenv").config({ path: ".env" });
 //require("dotenv").config({ path: ".env.secret" });
 
+let Fs = require("fs").promises;
+
 let Wallet = require("../lib/wallet.js").Wallet;
 
 async function main() {
@@ -42,6 +44,9 @@ async function main() {
   let ascii = await derive.qrFromXPubKey(xpubKey, index, amount, {
     format: "ascii",
   });
+  let svg = await derive.qrFromXPubKey(xpubKey, index, amount, {
+    format: "svg",
+  });
   console.info();
   console.info(
     `    ====== [${coinNameUpper}] (Derived) Public Key Hash ======    `
@@ -49,6 +54,16 @@ async function main() {
   console.info();
   console.info(ascii);
   console.info(`        ${coinNameUpper}: ${addr}        `);
+  console.info();
+
+  await Fs.writeFile(`./payment-address-${index}.svg`, svg, "utf8");
+  console.info(`Saved to ./payment-address-${index}.svg`);
+  await Fs.writeFile(
+    `./payment-address-${index}.html`,
+    `<img src="./payment-address-${index}.svg" />`,
+    "utf8"
+  );
+  console.info(`Saved to ./payment-address-${index}.html`);
   console.info();
 }
 
