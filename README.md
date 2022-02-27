@@ -51,7 +51,7 @@ require("dotenv").config({ path: ".env" });
 require("dotenv").config({ path: ".env.secret" });
 
 let Coins = require("@root/merchant-wallet/lib/coins.json");
-let Wallet = require("@root/merchant-wallet");
+let Wallet = require("@root/merchant-wallet").Wallet;
 
 let wallet = Wallet.create(Coins.dash);
 
