@@ -69,8 +69,10 @@ let index = 0;
 let amount = 0.01;
 
 let paymentAddr = await wallet.addrFromXPubKey(xpubKey, index);
-let qr = wallet.qrFromXPubKey(xpubKey, index, amount, { format: "svg" });
-let qrAscii = wallet.qrFromXPubKey(xpubKey, index, amount, { format: "ascii" });
+let qr = await wallet.qrFromXPubKey(xpubKey, index, amount, { format: "svg" });
+let qrAscii = await wallet.qrFromXPubKey(xpubKey, index, amount, {
+  format: "ascii",
+});
 
 console.info(`Wallet Import Format for Private Key:\n${wifQrAscii}`);
 console.info(`${wif}`);
