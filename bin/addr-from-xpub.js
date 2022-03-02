@@ -9,7 +9,10 @@ let Fs = require("fs").promises;
 let Wallet = require("../lib/wallet.js").Wallet;
 
 async function main() {
-  let index = parseInt(process.argv[2], 10);
+  let indices = process.argv[2].split("-");
+  let index = parseInt(indices[0], 10);
+  let end = parseInt(indices[1], 10) || index;
+    console.log('end');
   let amount = parseFloat(process.argv[3], 10);
   let coinName = process.argv[4] || process.env.WALLET_TYPE || "dash";
 
@@ -40,6 +43,7 @@ async function main() {
   }
 
   let coinNameUpper = myCoin.name.toUpperCase();
+
   let addr = await derive.addrFromXPubKey(xpubKey, index);
   let ascii = await derive.qrFromXPubKey(xpubKey, index, amount, {
     format: "ascii",
@@ -65,6 +69,16 @@ async function main() {
   );
   console.info(`Saved to ./payment-address-${index}.html`);
   console.info();
+
+  // multiple addresses
+  if (end > index) {
+    for (let i = index; i <= end; i += 1) {
+      let addr = await derive.addrFromXPubKey(xpubKey, i);
+      let n = i.toString().padStart(3, "0");
+      console.info(`${n}: ${addr}`);
+    }
+    console.info();
+  }
 }
 
 main().catch(function (err) {
