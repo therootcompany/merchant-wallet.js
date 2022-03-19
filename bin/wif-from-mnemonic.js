@@ -35,16 +35,17 @@ async function main() {
     return;
   }
 
-  console.info();
   let coinNameUpper = myCoin.name.toUpperCase();
-  console.info(
-    `    ====== [${coinNameUpper}] WIF (Wallet Import Format) Private Key ======    `
-  );
   let wif = await derive.wifFromMnemonic(mnemonic, index);
-  console.info();
   let ascii = await derive.wifQrFromMnemonic(mnemonic, index, {
     format: "ascii",
   });
+
+  console.info();
+  console.info(
+    `    ====== [${coinNameUpper}] WIF (Wallet Import Format) Private Key ======    `
+  );
+  console.info();
   console.info(ascii);
   console.info(`    ${coinNameUpper}: ${wif}    `);
   console.info();
