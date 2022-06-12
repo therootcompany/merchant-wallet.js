@@ -24,7 +24,9 @@ async function main() {
   let coins = require("../lib/coins.json");
   let myCoin = coins[coinName];
 
-  let derive = Wallet.create(myCoin);
+  let direction = process.argv[4] || 0;
+  let account = process.argv[5] || 0;
+  let derive = Wallet.create(myCoin, direction, account);
 
   let mnemonic = process.env.BASE2048_PASSPHRASE;
   if (!mnemonic) {
@@ -36,10 +38,10 @@ async function main() {
   }
 
   let coinNameUpper = myCoin.name.toUpperCase();
-  let wif = await derive.wifFromMnemonic(mnemonic, index);
+  let wif = await derive.wifFromMnemonic(mnemonic, index, direction, account);
   let ascii = await derive.wifQrFromMnemonic(mnemonic, index, {
     format: "ascii",
-  });
+  }, direction, account);
 
   console.info();
   console.info(

@@ -6,13 +6,13 @@ require("dotenv").config({ path: ".env" });
 
 let Fs = require("fs").promises;
 
+let request = require("@root/request");
 let Wallet = require("../lib/wallet.js").Wallet;
 
 async function main() {
   let indices = process.argv[2].split("-");
   let index = parseInt(indices[0], 10);
   let end = parseInt(indices[1], 10) || index;
-    console.log('end');
   let amount = parseFloat(process.argv[3], 10);
   let coinName = process.argv[4] || process.env.WALLET_TYPE || "dash";
 
@@ -74,8 +74,32 @@ async function main() {
   if (end > index) {
     for (let i = index; i <= end; i += 1) {
       let addr = await derive.addrFromXPubKey(xpubKey, i);
+      let resp = await request({
+        url: `https://insight.dash.org/insight-api/txs?address=${addr}&pageNum=0`,
+        json: true,
+      });
+
+      let credits = 0;
+      let debits = 0;
+      let satoshis = 100 * 1000 * 1000;
+      resp.body.txs.forEach(function (tx) {
+        //let fee = tx.valueIn - tx.valueOut;
+        // consumed as an input
+        tx.vin.forEach(function (vin) {
+          if (addr === vin.addr) {
+            debits += vin.valueSat;
+          }
+        });
+        tx.vout.forEach(function (vout) {
+          let value = Math.round(parseFloat(vout.value) * satoshis);
+          if (vout.scriptPubKey.addresses.includes(addr)) {
+            credits += value;
+          }
+        });
+      });
       let n = i.toString().padStart(3, "0");
-      console.info(`${n}: ${addr}`);
+      let total = (credits - debits).toString().padStart(10, "0");
+      console.info(`${n}: ${addr}: ${credits} - ${debits} = ${total}`);
     }
     console.info();
   }
