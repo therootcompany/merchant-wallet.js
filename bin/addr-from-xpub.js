@@ -98,8 +98,12 @@ async function main() {
         });
       });
       let n = i.toString().padStart(3, "0");
-      let total = (credits - debits).toString().padStart(10, "0");
-      console.info(`${n}: ${addr}: ${credits} - ${debits} = ${total}`);
+      let total = (credits - debits).toString().padStart(9, "0");
+      total = total[0] + "." + total.slice(1);
+
+      let creditsStr = credits.toString().padStart(9, "0");
+      let debitsStr = debits.toString().padStart(9, "0");
+      console.info(`${n}: ${addr}: ${total} (${creditsStr} - ${debitsStr})`);
     }
     console.info();
   }
