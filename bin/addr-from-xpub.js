@@ -86,7 +86,7 @@ async function main() {
     let pagesTotal = resp.body.pagesTotal;
     for (let cursor = 1; cursor < pagesTotal; cursor += 1) {
       let nextResp = await request({
-        url: `https://insight.dash.org/insight-api/txs?address=${addr}&pageNum=${i}`,
+        url: `https://insight.dash.org/insight-api/txs?address=${addr}&pageNum=${cursor}`,
         json: true,
       });
       // Note: this could still be wrong, but I don't think we have
