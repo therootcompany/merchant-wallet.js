@@ -71,42 +71,58 @@ async function main() {
   console.info();
 
   // multiple addresses
-  if (end > index) {
-    for (let i = index; i <= end; i += 1) {
-      let addr = await derive.addrFromXPubKey(xpubKey, i);
-      let resp = await request({
-        url: `https://insight.dash.org/insight-api/txs?address=${addr}&pageNum=0`,
+  let hasMany = end > index;
+  if (!hasMany) {
+    return;
+  }
+
+  for (let i = index; i <= end; i += 1) {
+    let addr = await derive.addrFromXPubKey(xpubKey, i);
+    let resp = await request({
+      url: `https://insight.dash.org/insight-api/txs?address=${addr}&pageNum=0`,
+      json: true,
+    });
+
+    let pagesTotal = resp.body.pagesTotal;
+    for (let cursor = 1; cursor < pagesTotal; cursor += 1) {
+      let nextResp = await request({
+        url: `https://insight.dash.org/insight-api/txs?address=${addr}&pageNum=${i}`,
         json: true,
       });
-
-      let credits = 0;
-      let debits = 0;
-      let satoshis = 100 * 1000 * 1000;
-      resp.body.txs.forEach(function (tx) {
-        //let fee = tx.valueIn - tx.valueOut;
-        // consumed as an input
-        tx.vin.forEach(function (vin) {
-          if (addr === vin.addr) {
-            debits += vin.valueSat;
-          }
-        });
-        tx.vout.forEach(function (vout) {
-          let value = Math.round(parseFloat(vout.value) * satoshis);
-          if (vout.scriptPubKey.addresses.includes(addr)) {
-            credits += value;
-          }
-        });
-      });
-      let n = i.toString().padStart(3, "0");
-      let total = (credits - debits).toString().padStart(9, "0");
-      total = total[0] + "." + total.slice(1);
-
-      let creditsStr = credits.toString().padStart(9, "0");
-      let debitsStr = debits.toString().padStart(9, "0");
-      console.info(`${n}: ${addr}: ${total} (${creditsStr} - ${debitsStr})`);
+      // Note: this could still be wrong, but I don't think we have
+      // a better way to page so... whatever
+      resp.body.txs = resp.body.txs.concat(nextResp.body.txs);
     }
-    console.info();
+
+    //console.log(JSON.stringify(resp.body, null, 2));
+
+    let credits = 0;
+    let debits = 0;
+    let satoshis = 100 * 1000 * 1000;
+    resp.body.txs.forEach(function (tx) {
+      //let fee = tx.valueIn - tx.valueOut;
+      // consumed as an input
+      tx.vin.forEach(function (vin) {
+        if (addr === vin.addr) {
+          debits += vin.valueSat;
+        }
+      });
+      tx.vout.forEach(function (vout) {
+        let value = Math.round(parseFloat(vout.value) * satoshis);
+        if (vout.scriptPubKey.addresses.includes(addr)) {
+          credits += value;
+        }
+      });
+    });
+    let n = i.toString().padStart(3, "0");
+    let total = (credits - debits).toString().padStart(9, "0");
+    total = total[0] + "." + total.slice(1);
+
+    let creditsStr = credits.toString().padStart(9, "0");
+    let debitsStr = debits.toString().padStart(9, "0");
+    console.info(`${n}: ${addr}: ${total} (${creditsStr} - ${debitsStr})`);
   }
+  console.info();
 }
 
 main().catch(function (err) {
