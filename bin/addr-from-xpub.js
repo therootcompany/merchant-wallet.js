@@ -116,7 +116,7 @@ async function main() {
     });
     let n = i.toString().padStart(3, "0");
     let total = (credits - debits).toString().padStart(9, "0");
-    total = total[0] + "." + total.slice(1);
+    total = total.slice(0, total.length - 8) + "." + total.slice(-8);
 
     let creditsStr = credits.toString().padStart(9, "0");
     let debitsStr = debits.toString().padStart(9, "0");
