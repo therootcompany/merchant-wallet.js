@@ -46,59 +46,63 @@ async function main() {
   );
   console.info();
 
-  for (let i = index; i <= end; i += 2) {
-    let next = i + 1;
-    let wif1 = await derive.wifFromMnemonic(
-      mnemonic,
-      index + 0,
-      direction,
-      account
-    );
-    let ascii1 = await derive.wifQrFromMnemonic(
-      mnemonic,
-      index + 0,
-      { format: "ascii" },
-      direction,
-      account
-    );
-    //console.info(ascii1);
-
-    let wif2 = await derive.wifFromMnemonic(
-      mnemonic,
-      index + 1,
-      direction,
-      account
-    );
-    let ascii2 = await derive.wifQrFromMnemonic(
-      mnemonic,
-      index + 1,
-      { format: "ascii" },
-      direction,
-      account
-    );
-
-    let ascii1Lines = ascii1.split(/\n/);
-    let ascii2Lines = ascii2.split(/\n/);
-    let max = Math.max(ascii1Lines.length, ascii2Lines.length);
-    for (let n = 0; n < max; n += 1) {
-      let line1 = (ascii1Lines[n] || "").padStart(34, " ");
-      if (next <= end) {
-        let line2 = (ascii2Lines[n] || "").padStart(34, " ");
-        if (n === max - 1) {
-          // TODO why the offset?
-          console.info(`${line1}       ${line2}`);
-        } else {
-          console.info(`${line1}    ${line2}`);
-        }
-      } else {
-        console.info(`${line1}`);
+  // TODO sparse range
+  let cols = 3;
+  for (let i = index; i <= end; i += cols) {
+    let max = 0;
+    let addrs = [];
+    for (let m = 0; m < cols; m += 1) {
+      let next = i + m;
+      if (next > end) {
+        continue;
       }
+      let wif = await derive.wifFromMnemonic(
+        mnemonic,
+        next,
+        direction,
+        account
+      );
+      let ascii = await derive.wifQrFromMnemonic(
+        mnemonic,
+        next,
+        { format: "ascii" },
+        direction,
+        account
+      );
+      let lines = ascii.split("\n");
+      max = Math.max(lines.length, max);
+
+      addrs.push({
+        wif,
+        lines,
+      });
     }
-    if (i === end) {
-      console.info(`${coinNameUpper}: ${wif1}`);
-    } else {
-      console.info(`${coinNameUpper}: ${wif1}, ${wif2}`);
+
+    for (let n = 0; n < max; n += 1) {
+      let longLine = "";
+      addrs.forEach(function (addr, j) {
+        let line = (addr.lines[n] || "").padStart(34, " ");
+        longLine += `${line}    `;
+      });
+      console.info(longLine);
     }
+    console.info();
+
+    /*
+    let addrsLine = `${coinNameUpper}: `;
+    addrs.forEach(function (addr, j) {
+      if (0 === j) {
+        addrsLine += addr.wif;
+      } else {
+        addrsLine += `, ${addr.wif}`;
+      }
+    });
+    console.info(addrsLine);
+    */
+    addrs.forEach(function (addr, j) {
+      console.info(i + j, addr.wif);
+    });
+    console.info();
   }
   console.info();
 }
